@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ -z $ZK_NM ]
+  then
+    ZK_NM=3
+fi
+
+echo "storm.zookeeper.servers:" >> /storm/conf/storm.yaml
+
+until [ $ZK_NM -lt 1 ]; do 
+  echo "    - \"zookeeper-$ZK_NM\" >> /storm/conf/storm.yaml
+  let ZK_NM-=1
+done
+
+
+echo "nimbus.host: \"$STORM_HN\"" >> /storm/conf/storm.yaml
+
+/storm/bin/storm nimbus

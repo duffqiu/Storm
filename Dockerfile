@@ -9,14 +9,15 @@ RUN wget --no-cookies --no-check-certificate http://www.us.apache.org/dist/storm
 RUN tar zxf apache-storm-0.9.4.tar.gz
 RUN mv apache-storm-0.9.4 storm
 
+ADD start-nb /storm/start-nb
+
+RUN chmod +x /storm/start-nb
+
 EXPOSE 6627
 
-EXPOSE 6700 6701 6702 6703
-
-EXPOSE 8080
+EXPOSE 3772 3773
 
 WORKDIR storm
 
-ENTRYPOINT [ "bin/storm" ]
+ENTRYPOINT [ "start-nb" ]
 
-CMD ["nimbus"]
