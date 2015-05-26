@@ -19,5 +19,5 @@ EXPOSE 3772 3773
 
 WORKDIR storm
 
-ENTRYPOINT [ "start-nb" ]
+ENTRYPOINT [ "/storm/start-nb" ]
 
