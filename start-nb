@@ -10,7 +10,7 @@ fi
 echo "storm.zookeeper.servers:" >> /storm/conf/storm.yaml
 
 until [ $ZK_NM -lt 1 ]; do 
-  echo "    - \"zookeeper-$ZK_NM\" >> /storm/conf/storm.yaml
+  echo "    - \"zookeeper-$ZK_NM\"" >> /storm/conf/storm.yaml
   let ZK_NM-=1
 done
 
