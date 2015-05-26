@@ -15,4 +15,6 @@ done
 
 echo "nimbus.host: \"$STORM_HN\"" >> /storm/conf/storm.yaml
 
+echo "storm.zookeeper.root: \"/storm/$NBID\"" >> /storm/conf/storm.yaml
+
 /storm/bin/storm nimbus
