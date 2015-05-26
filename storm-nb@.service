@@ -16,7 +16,7 @@ ExecStart=/usr/bin/docker run  \
                               --name stormnb-%i \
                               -e ZK_NM=3 \
                               -e STORM_HN=${COREOS_PRIVATE_IPV4} \
-                              -e $NBID=%i \
+                              -e NBID=%i \
                               --hostname stormnb-%i.${DOMAIN_NAME} \
                               --dns-search ${DOMAIN_NAME} \
                               --dns ${COREOS_PRIVATE_IPV4} \
