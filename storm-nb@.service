@@ -1,0 +1,30 @@
+[Unit]
+Description=storm nimbus service unit
+After=docker.service
+Wants=stormnb-presence@%i.service
+
+[Service]
+Restart=always
+RestartSec=15
+TimeoutSec=120
+EnvironmentFile=/etc/environment
+Environment="DOMAIN_NAME=cluster.duffqiu.org"
+ExecStartPre=-/usr/bin/docker kill stormnnb-%i
+ExecStartPre=-/usr/bin/docker rm  stormnb-%i
+ExecStartPre=-/usr/bin/docker pull duffqiu/storm:latest
+ExecStart=/usr/bin/docker run  \
+                              --name stormnb-%i \
+                              -e ZK_NM=3 \
+                              -e STORM_HN=${COREOS_PRIVATE_IPV4} \
+                              -e $NBID=%i \
+                              --hostname stormnb-%i.${DOMAIN_NAME} \
+                              --dns-search ${DOMAIN_NAME} \
+                              --dns ${COREOS_PRIVATE_IPV4} \
+                              -p ${COREOS_PRIVATE_IPV4}:6627:6627 \
+                              -v /mirror/storm/nb/logs:/storm/logs \
+                              duffqiu/storm:latest
+ExecStop=-/usr/bin/docker stop stormnb-%i
+
+[X-Fleet]
+X-Conflicts=storm-nb@*.service
+MachineMetadata=role=back

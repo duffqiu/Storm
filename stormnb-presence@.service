@@ -1,0 +1,17 @@
+[Unit]
+Description=Storm Nimbus Presence Service
+BindsTo=storm-nb@%i.service
+After=storm-nb@%i.service
+
+[Service]
+Restart=always
+RestartSec=30
+EnvironmentFile=/etc/environment
+Environment="STORM_NIMBUS_PORT=6627"
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/nimbus-%i '{"host":"${COREOS_PRIVATE_IPV4}","port":${STORM_NIMBUS_PORT}}'
+ExecStartPre=/usr/bin/etcdctl set --ttl 60 /skydns/org/duffqiu/cluster/storm%i/nimbus '{"host":"${COREOS_PRIVATE_IPV4}","port":${STORM_NIMBUS_PORT}}'
+ExecStart=/usr/bin/echo "Set storm nimbus-%i in skydns2"
+
+[X-Fleet]
+MachineOf=storm-nb@%i.service
+MachineMetadata=role=back
